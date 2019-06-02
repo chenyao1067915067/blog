@@ -63,23 +63,40 @@ const serverHandle = (req,res) => {
 
         req.body = postData
         //处理blog路由
-        const blogData = handleBlogRouter(req, res)
+        const blogResult = handleBlogRouter(req, res)
+        if(blogResult){
+            blogResult.then(data => {
+                res.end(
+                    JSON.stringify(data)
+                )
+            })
+            return
+        }
+        // //处理blog
+        // if(blogData){
+        //     res.end(
+        //         JSON.stringify(blogData)
+        //     )
+        //     return
+        // }
+        const userResult = handleUserRouter(req, res)
+
+        if(userResult){
+            userResult.then( data => {
+                res.end(
+                    JSON.stringify(data)
+                )
+            })
+            return
+        }
        
-        //处理blog
-        if(blogData){
-            res.end(
-                JSON.stringify(blogData)
-            )
-            return
-        }
-        const userData = handleUserRouter(req, res)
-        //处理user
-        if(userData){
-            res.end(
-                JSON.stringify(userData)
-            )
-            return
-        }
+        // //处理user
+        // if(userData){
+        //     res.end(
+        //         JSON.stringify(userData)
+        //     )
+        //     return
+        // }
 
          //未命中路由，返回404
         res.writeHead(404,{"Content-type":"text/plain"})

@@ -10,10 +10,18 @@ const handleUserRouter = (req, res) => {
         // }
         const {username, password} = req.body
         const result = loginCheck(username, password)
-        if(result) {
-            return new SuccessModel('登录成功')
-        }
-        return new ErrorModel('登录失败')
+        return result.then(data => {
+            if(data){
+                return new SuccessModel('登录成功')
+            }
+            else{
+                return new ErrorModel('登录失败')
+            }
+        })
+        // if(result) {
+        //     return new SuccessModel('登录成功')
+        // }
+        // return new ErrorModel('登录失败')
     }
 }
 
